@@ -84,16 +84,16 @@ func main() {
 		return
 	}
 
-	db.AutoMigrate(&models.PostData{})
+	db.AutoMigrate(&models.Data{})
 
-	repo := repos.NewPostDataRepo(db)
-	service := services.NewPostDataService(repo)
-	postDataController := controllers.NewPostDataController(service)
+	repo := repos.NewDataRepo(db)
+	service := services.NewDataService(repo)
+	dataController := controllers.NewDataController(service)
 
 	r := gin.Default()
-	r.POST("/post-data", postDataController.SavePostData)
-	r.GET("/post-data", postDataController.GetPostData)
-	r.GET("/post-data/:title", postDataController.GetPostData)
+	r.POST("/post-data", dataController.Data)
+	r.GET("/get-data", dataController.GetData)
+	r.GET("/get-data/:title", dataController.GetData)
 
 	hostPort := fmt.Sprintf("%s:%s", httpHost, httpPort)
 	log.Println("Server starting at ", hostPort)

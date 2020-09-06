@@ -26,6 +26,6 @@ func GetTestDB() *gorm.DB {
 		panic(err)
 	}
 
-	db.AutoMigrate(&PostData{})
+	db.AutoMigrate(&Data{})
 	return db
 }

@@ -29,10 +29,10 @@ curl -X POST --header "Content-Type: application/json" --data '{"title": "Test1"
 }
 ```
 
-### List all post data `GET /post-data`
+### List all post data `GET /get-data`
 
 ```bash
-curl -v http://docker_host_address:3000/post-data
+curl -v http://docker_host_address:3000/get-data
 ```
 
 ```json
@@ -45,10 +45,10 @@ curl -v http://docker_host_address:3000/post-data
 ]
 ```
 
-### Get post data by title `GET /post-data/{title}`
+### Get post data by title `GET /get-data/{title}`
 
 ```bash
-curl -v http://docker_host_address:3000/post-data/test2
+curl -v http://docker_host_address:3000/get-data/test2
 ```
 
 ```json

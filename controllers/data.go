@@ -12,24 +12,24 @@ import (
 	"gorm.io/gorm"
 )
 
-type PostData struct {
+type Data struct {
 	Title string `form:"title" json:"title" xml:"title"  binding:"required"`
 }
 
-type PostDataController interface {
-	GetPostData(*gin.Context)
-	SavePostData(*gin.Context)
+type DataController interface {
+	GetData(*gin.Context)
+	Data(*gin.Context)
 }
 
-type postDataController struct {
-	Service services.PostDataService
+type dataController struct {
+	Service services.DataService
 }
 
-func NewPostDataController(service services.PostDataService) PostDataController {
-	return &postDataController{service}
+func NewDataController(service services.DataService) DataController {
+	return &dataController{service}
 }
 
-func (pdc postDataController) GetPostData(c *gin.Context) {
+func (pdc dataController) GetData(c *gin.Context) {
 	title := c.Param("title")
 
 	if len(title) == 0 {
@@ -72,8 +72,8 @@ func (pdc postDataController) GetPostData(c *gin.Context) {
 	c.JSON(200, result)
 }
 
-func (pdc postDataController) SavePostData(c *gin.Context) {
-	var json PostData
+func (pdc dataController) Data(c *gin.Context) {
+	var json Data
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

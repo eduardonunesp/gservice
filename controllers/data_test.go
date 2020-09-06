@@ -24,21 +24,21 @@ func TestGetData(t *testing.T) {
 	c, _ := gin.CreateTestContext(w)
 
 	db := models.GetTestDB()
-	repo := repos.NewPostDataRepo(db)
-	service := services.NewPostDataService(repo)
+	repo := repos.NewDataRepo(db)
+	service := services.NewDataService(repo)
 
 	title := "Title Test"
 
 	// Inserting register on db to test
-	db.Create(models.PostData{
+	db.Create(models.Data{
 		Title:         title,
 		UUID4:         uuid.New().String(),
 		UnixTimestamp: time.Now().UTC().Unix(),
 	})
 
-	controller := NewPostDataController(service)
+	controller := NewDataController(service)
 
-	controller.GetPostData(c)
+	controller.GetData(c)
 
 	assert.Equal(t, 200, w.Code)
 
@@ -71,14 +71,14 @@ func TestGetData(t *testing.T) {
 	}
 }
 
-func TestPostData(t *testing.T) {
+func TestData(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
 	db := models.GetTestDB()
-	repo := repos.NewPostDataRepo(db)
-	service := services.NewPostDataService(repo)
-	controller := NewPostDataController(service)
-	router.POST("/post-data", controller.SavePostData)
+	repo := repos.NewDataRepo(db)
+	service := services.NewDataService(repo)
+	controller := NewDataController(service)
+	router.POST("/post-data", controller.Data)
 
 	buf := strings.NewReader(`{"title": "mydata"}`)
 	req, err := http.NewRequest("POST", "/post-data", buf)
@@ -92,7 +92,7 @@ func TestPostData(t *testing.T) {
 	assert.Equal(t, resp.Code, 201)
 
 	// Check if has inserted
-	var result []models.PostData
+	var result []models.Data
 	err = db.Find(&result).Error
 
 	if err != nil {

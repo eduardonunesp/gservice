@@ -8,12 +8,12 @@ import (
 )
 
 func TestTimestampFormat(t *testing.T) {
-	postData := PostData{
+	data := Data{
 		Title:         "Some Title",
 		UUID4:         uuid.New().String(),
 		UnixTimestamp: 1597805784,
 	}
 
-	postData.AfterFind(GetTestDB())
-	assert.Equal(t, postData.Timestamp, "2020-08-19T02:56:24+00:00")
+	data.AfterFind(GetTestDB())
+	assert.Equal(t, data.Timestamp, "2020-08-19T02:56:24+00:00")
 }

@@ -31,13 +31,13 @@ func getTestDB() *gorm.DB {
 		panic(err)
 	}
 
-	db.AutoMigrate(&models.PostData{})
+	db.AutoMigrate(&models.Data{})
 	return db
 }
 
 func TestSelect(t *testing.T) {
 	db := models.GetTestDB()
-	repo := NewPostDataRepo(db)
+	repo := NewDataRepo(db)
 
 	// Testing select
 	result, err := repo.Select()
@@ -54,7 +54,7 @@ func TestSelect(t *testing.T) {
 	title := "Title Test"
 
 	// Inserting register on db to test
-	db.Create(models.PostData{
+	db.Create(models.Data{
 		Title:         title,
 		UUID4:         uuid.New().String(),
 		UnixTimestamp: time.Now().UTC().Unix(),
@@ -88,7 +88,7 @@ func TestSelect(t *testing.T) {
 
 func TestInsert(t *testing.T) {
 	db := models.GetTestDB()
-	repo := NewPostDataRepo(db)
+	repo := NewDataRepo(db)
 
 	title := "Title Test"
 
@@ -101,7 +101,7 @@ func TestInsert(t *testing.T) {
 	}
 
 	// Check if has inserted
-	var result []models.PostData
+	var result []models.Data
 	err = db.Find(&result).Error
 
 	if err != nil {
