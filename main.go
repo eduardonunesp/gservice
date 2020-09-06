@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"gservice/controllers"
-	"gservice/models"
-	"gservice/repos"
-	"gservice/services"
 	"log"
 	"os"
+
+	"github.com/eduardonunesp/gservice/controllers"
+	"github.com/eduardonunesp/gservice/models"
+	"github.com/eduardonunesp/gservice/repos"
+	"github.com/eduardonunesp/gservice/services"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"

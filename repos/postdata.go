@@ -1,8 +1,9 @@
 package repos
 
 import (
-	"gservice/models"
 	"time"
+
+	"github.com/eduardonunesp/gservice/models"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"

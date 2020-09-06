@@ -2,17 +2,17 @@ package controllers
 
 import (
 	"encoding/json"
-	"gservice/controllers"
-	"gservice/models"
-	"gservice/repos"
-	"gservice/services"
-	"gservice/utils"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/eduardonunesp/gservice/models"
+	"github.com/eduardonunesp/gservice/repos"
+	"github.com/eduardonunesp/gservice/services"
+	"github.com/eduardonunesp/gservice/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"

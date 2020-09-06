@@ -1,8 +1,8 @@
 package services
 
 import (
-	"gservice/models"
-	"gservice/repos"
+	"github.com/eduardonunesp/gservice/models"
+	"github.com/eduardonunesp/gservice/repos"
 )
 
 type PostDataService interface {

@@ -1,9 +1,10 @@
 package utils
 
 import (
-	"gservice/models"
 	"io/ioutil"
 	"os"
+
+	"github.com/eduardonunesp/gservice/models"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/sqlite"

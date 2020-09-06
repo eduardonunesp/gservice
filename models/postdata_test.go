@@ -1,8 +1,9 @@
 package models
 
 import (
-	"gservice/utils"
 	"testing"
+
+	"github.com/eduardonunesp/gservice/utils"
 
 	"github.com/go-playground/assert/v2"
 	"github.com/google/uuid"

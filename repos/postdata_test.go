@@ -2,13 +2,13 @@ package repos
 
 import (
 	"errors"
-	"gservice/models"
-	"gservice/repos"
-	"gservice/utils"
 	"io/ioutil"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/eduardonunesp/gservice/models"
+	"github.com/eduardonunesp/gservice/utils"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/sqlite"

@@ -3,9 +3,10 @@ package controllers
 import (
 	"errors"
 	"fmt"
-	"gservice/services"
 	"log"
 	"net/http"
+
+	"github.com/eduardonunesp/gservice/services"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
