@@ -91,7 +91,7 @@ func main() {
 	dataController := controllers.NewDataController(service)
 
 	r := gin.Default()
-	r.POST("/post-data", dataController.Data)
+	r.POST("/post-data", dataController.PostData)
 	r.GET("/get-data", dataController.GetData)
 	r.GET("/get-data/:title", dataController.GetData)
 

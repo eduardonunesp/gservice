@@ -78,7 +78,7 @@ func TestData(t *testing.T) {
 	repo := repos.NewDataRepo(db)
 	service := services.NewDataService(repo)
 	controller := NewDataController(service)
-	router.POST("/post-data", controller.Data)
+	router.POST("/post-data", controller.PostData)
 
 	buf := strings.NewReader(`{"title": "mydata"}`)
 	req, err := http.NewRequest("POST", "/post-data", buf)

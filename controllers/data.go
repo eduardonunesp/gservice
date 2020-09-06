@@ -18,7 +18,7 @@ type Data struct {
 
 type DataController interface {
 	GetData(*gin.Context)
-	Data(*gin.Context)
+	PostData(*gin.Context)
 }
 
 type dataController struct {
@@ -72,7 +72,7 @@ func (pdc dataController) GetData(c *gin.Context) {
 	c.JSON(200, result)
 }
 
-func (pdc dataController) Data(c *gin.Context) {
+func (pdc dataController) PostData(c *gin.Context) {
 	var json Data
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
