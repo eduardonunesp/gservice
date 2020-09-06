@@ -3,8 +3,6 @@ package models
 import (
 	"testing"
 
-	"github.com/eduardonunesp/gservice/utils"
-
 	"github.com/go-playground/assert/v2"
 	"github.com/google/uuid"
 )
@@ -16,6 +14,6 @@ func TestTimestampFormat(t *testing.T) {
 		UnixTimestamp: 1597805784,
 	}
 
-	postData.AfterFind(utils.GetTestDB())
+	postData.AfterFind(GetTestDB())
 	assert.Equal(t, postData.Timestamp, "2020-08-19T02:56:24+00:00")
 }

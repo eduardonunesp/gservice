@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/eduardonunesp/gservice/models"
-	"github.com/eduardonunesp/gservice/utils"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/sqlite"
@@ -37,8 +36,8 @@ func getTestDB() *gorm.DB {
 }
 
 func TestSelect(t *testing.T) {
-	db := utils.GetTestDB()
-	repo := repos.NewPostDataRepo(db)
+	db := models.GetTestDB()
+	repo := NewPostDataRepo(db)
 
 	// Testing select
 	result, err := repo.Select()
@@ -88,8 +87,8 @@ func TestSelect(t *testing.T) {
 }
 
 func TestInsert(t *testing.T) {
-	db := utils.GetTestDB()
-	repo := repos.NewPostDataRepo(db)
+	db := models.GetTestDB()
+	repo := NewPostDataRepo(db)
 
 	title := "Title Test"
 

@@ -1,10 +1,8 @@
-package utils
+package models
 
 import (
 	"io/ioutil"
 	"os"
-
-	"github.com/eduardonunesp/gservice/models"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/sqlite"
@@ -28,6 +26,6 @@ func GetTestDB() *gorm.DB {
 		panic(err)
 	}
 
-	db.AutoMigrate(&models.PostData{})
+	db.AutoMigrate(&PostData{})
 	return db
 }

@@ -12,7 +12,6 @@ import (
 	"github.com/eduardonunesp/gservice/models"
 	"github.com/eduardonunesp/gservice/repos"
 	"github.com/eduardonunesp/gservice/services"
-	"github.com/eduardonunesp/gservice/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/assert/v2"
@@ -24,7 +23,7 @@ func TestGetData(t *testing.T) {
 	w := httptest.NewRecorder()
 	c, _ := gin.CreateTestContext(w)
 
-	db := utils.GetTestDB()
+	db := models.GetTestDB()
 	repo := repos.NewPostDataRepo(db)
 	service := services.NewPostDataService(repo)
 
@@ -37,7 +36,7 @@ func TestGetData(t *testing.T) {
 		UnixTimestamp: time.Now().UTC().Unix(),
 	})
 
-	controller := controllers.NewPostDataController(service)
+	controller := NewPostDataController(service)
 
 	controller.GetPostData(c)
 
@@ -75,10 +74,10 @@ func TestGetData(t *testing.T) {
 func TestPostData(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	router := gin.Default()
-	db := utils.GetTestDB()
+	db := models.GetTestDB()
 	repo := repos.NewPostDataRepo(db)
 	service := services.NewPostDataService(repo)
-	controller := controllers.NewPostDataController(service)
+	controller := NewPostDataController(service)
 	router.POST("/post-data", controller.SavePostData)
 
 	buf := strings.NewReader(`{"title": "mydata"}`)
