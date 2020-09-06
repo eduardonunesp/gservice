@@ -33,7 +33,7 @@ func (pdc postDataController) GetPostData(c *gin.Context) {
 	title := c.Param("title")
 
 	if len(title) == 0 {
-		result, err := pdc.Service.GetAll()
+		results, err := pdc.Service.GetAll()
 
 		if err != nil {
 			log.Printf("Internal error %+v\n", err)
@@ -45,7 +45,7 @@ func (pdc postDataController) GetPostData(c *gin.Context) {
 			return
 		}
 
-		c.JSON(200, result)
+		c.JSON(200, results)
 		return
 	}
 
