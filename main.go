@@ -26,6 +26,7 @@ var (
 )
 
 // Testsss
+// Test 2
 
 func init() {
 	var found bool
