@@ -25,6 +25,8 @@ var (
 	postgresPort     string
 )
 
+// Test
+
 func init() {
 	var found bool
 	httpHost, found = os.LookupEnv("HTTP_HOST")
