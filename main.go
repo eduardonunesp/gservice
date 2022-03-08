@@ -25,7 +25,7 @@ var (
 	postgresPort     string
 )
 
-// Test
+// Tests
 
 func init() {
 	var found bool
