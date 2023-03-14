@@ -13,7 +13,9 @@ import (
 )
 
 type Data struct {
-	Title string `form:"title" json:"title" xml:"title"  binding:"required"`
+	Name  string `form:"name" json:"name" xml:"name"  binding:"required"`
+	Stage int    `form:"stage" json:"stage" xml:"stage"  binding:"required"`
+	Score int    `form:"score" json:"score" xml:"score"  binding:"required"`
 }
 
 type DataController interface {
@@ -30,9 +32,9 @@ func NewDataController(service services.DataService) DataController {
 }
 
 func (pdc dataController) GetData(c *gin.Context) {
-	title := c.Param("title")
+	name := c.Param("name")
 
-	if len(title) == 0 {
+	if len(name) == 0 {
 		results, err := pdc.Service.GetAll()
 
 		if err != nil {
@@ -49,14 +51,14 @@ func (pdc dataController) GetData(c *gin.Context) {
 		return
 	}
 
-	result, err := pdc.Service.GetByTitle(title)
+	result, err := pdc.Service.GetByName(name)
 
 	if err != nil {
 		log.Printf("Internal error %+v\n", err)
 
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(404, gin.H{
-				"error": "title not found",
+				"error": "name not found",
 			})
 
 			return
@@ -79,7 +81,7 @@ func (pdc dataController) PostData(c *gin.Context) {
 		return
 	}
 
-	if err := pdc.Service.Insert(json.Title); err != nil {
+	if err := pdc.Service.Insert(json.Name, json.Stage, json.Score); err != nil {
 		c.JSON(500, gin.H{
 			"error": "failed to insert post data",
 			"cause": fmt.Sprintf("Internal error %+v\n", err),

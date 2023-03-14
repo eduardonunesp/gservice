@@ -11,7 +11,9 @@ const ISO8061Format = "%04d-%02d-%02dT%02d:%02d:%02d+%s"
 
 type Data struct {
 	UUID4         string `gorm:"uuid;primaryKey"`
-	Title         string `gorm:"title;unique"`
+	Name          string `gorm:"name;unique"`
+	Stage         int    `gorm:"stage"`
+	Score         int    `gorm:"score"`
 	Timestamp     string `gorm:"-"`
 	UnixTimestamp int64  `gorm:"unix_timestamp" json:"-"`
 }

@@ -2,8 +2,6 @@ package repos
 
 import (
 	"errors"
-	"io/ioutil"
-	"os"
 	"testing"
 	"time"
 
@@ -15,15 +13,8 @@ import (
 )
 
 func getTestDB() *gorm.DB {
-	parentDir := os.TempDir()
-	dirName := uuid.New().String()
-	tmpDir, err := ioutil.TempDir(parentDir, dirName)
-
-	if err != nil {
-		panic(err)
-	}
-
-	db, err := gorm.Open(sqlite.Open(tmpDir+"/gdatabase_test.db"), &gorm.Config{
+	// Sqlite in memory
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{
 		SkipDefaultTransaction: true,
 	})
 
@@ -51,11 +42,13 @@ func TestSelect(t *testing.T) {
 		t.Error("Result should be 0")
 	}
 
-	title := "Title Test"
+	name := "Title Test"
 
 	// Inserting register on db to test
 	db.Create(models.Data{
-		Title:         title,
+		Name:          name,
+		Stage:         1,
+		Score:         100,
 		UUID4:         uuid.New().String(),
 		UnixTimestamp: time.Now().UTC().Unix(),
 	})
@@ -63,19 +56,24 @@ func TestSelect(t *testing.T) {
 	// Testing if select returns the register
 	results, err := repo.Select()
 
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
 	if len(results) == 0 {
 		t.Error("Result should greater than 0")
 	}
 
 	// Test if find the register by title
-	_, err = repo.SelectByTitle(title)
+	_, err = repo.SelectByName(name)
 
 	if err != nil {
 		t.Error(err)
 	}
 
 	// Test not found the register by title
-	_, err = repo.SelectByTitle("Some Not Inserted Title")
+	_, err = repo.SelectByName("Some Not Inserted Title")
 
 	if err == nil {
 		t.Error("Title should be not found")
@@ -90,10 +88,12 @@ func TestInsert(t *testing.T) {
 	db := models.GetTestDB()
 	repo := NewDataRepo(db)
 
-	title := "Title Test"
+	name := "Title Test 2"
+	stage := 1
+	score := 100
 
 	// Testing insert
-	err := repo.Insert(title)
+	err := repo.Insert(name, stage, score)
 
 	if err != nil {
 		t.Error(err)
@@ -114,7 +114,7 @@ func TestInsert(t *testing.T) {
 	}
 
 	// Testing unique register
-	err = repo.Insert(title)
+	err = repo.Insert(name, stage, score)
 
 	if err == nil {
 		t.Error("Expecting error of unique")

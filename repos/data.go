@@ -11,8 +11,8 @@ import (
 
 type DataRepo interface {
 	Select() ([]models.Data, error)
-	SelectByTitle(title string) (models.Data, error)
-	Insert(title string) error
+	SelectByName(name string) (models.Data, error)
+	Insert(name string, stage, score int) error
 }
 
 type dataRepo struct {
@@ -29,15 +29,17 @@ func (m *dataRepo) Select() ([]models.Data, error) {
 	return result, err
 }
 
-func (m *dataRepo) SelectByTitle(title string) (models.Data, error) {
+func (m *dataRepo) SelectByName(name string) (models.Data, error) {
 	result := models.Data{}
-	err := m.DB.Where("title = ?", title).First(&result).Error
+	err := m.DB.Where("name = ?", name).First(&result).Error
 	return result, err
 }
 
-func (m *dataRepo) Insert(title string) error {
+func (m *dataRepo) Insert(name string, stage, score int) error {
 	data := models.Data{
-		Title:         title,
+		Name:          name,
+		Stage:         stage,
+		Score:         score,
 		UUID4:         uuid.New().String(),
 		UnixTimestamp: time.Now().UTC().Unix(),
 	}
