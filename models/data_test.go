@@ -9,7 +9,9 @@ import (
 
 func TestTimestampFormat(t *testing.T) {
 	data := Data{
-		Title:         "Some Title",
+		Name:          "Some Title",
+		Stage:         1,
+		Score:         100,
 		UUID4:         uuid.New().String(),
 		UnixTimestamp: 1597805784,
 	}

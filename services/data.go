@@ -7,8 +7,8 @@ import (
 
 type DataService interface {
 	GetAll() ([]models.Data, error)
-	GetByTitle(name string) (models.Data, error)
-	Insert(title string) error
+	GetByName(name string) (models.Data, error)
+	Insert(name string, stage, score int) error
 }
 
 type dataService struct {
@@ -21,14 +21,14 @@ func NewDataService(repo repos.DataRepo) DataService {
 	}
 }
 
-func (s *dataService) Insert(title string) error {
-	return s.repo.Insert(title)
+func (s *dataService) Insert(name string, stage, score int) error {
+	return s.repo.Insert(name, stage, score)
 }
 
 func (s *dataService) GetAll() ([]models.Data, error) {
 	return s.repo.Select()
 }
 
-func (s *dataService) GetByTitle(title string) (models.Data, error) {
-	return s.repo.SelectByTitle(title)
+func (s *dataService) GetByName(name string) (models.Data, error) {
+	return s.repo.SelectByName(name)
 }

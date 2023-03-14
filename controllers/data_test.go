@@ -27,11 +27,15 @@ func TestGetData(t *testing.T) {
 	repo := repos.NewDataRepo(db)
 	service := services.NewDataService(repo)
 
-	title := "Title Test"
+	name := "Title Test"
+	stage := 1
+	score := 100
 
 	// Inserting register on db to test
 	db.Create(models.Data{
-		Title:         title,
+		Name:          name,
+		Stage:         stage,
+		Score:         score,
 		UUID4:         uuid.New().String(),
 		UnixTimestamp: time.Now().UTC().Unix(),
 	})
@@ -51,8 +55,10 @@ func TestGetData(t *testing.T) {
 
 	var results []struct {
 		UUID4     string `json:"UUID4"`
-		Title     string `json:"Title"`
-		Timestamp string `json:"Timestamp"`
+		Name      string `json:"name"`
+		Stage     int    `json:"stage"`
+		Score     int    `json:"score"`
+		Timestamp string `json:"timestamp"`
 	}
 
 	err = json.Unmarshal(b, &results)
@@ -66,7 +72,7 @@ func TestGetData(t *testing.T) {
 		t.Error("Result should return one register")
 	}
 
-	if results[0].Title != title {
+	if results[0].Name != name {
 		t.Error("Wrong title returned from the http call")
 	}
 }
@@ -80,7 +86,7 @@ func TestData(t *testing.T) {
 	controller := NewDataController(service)
 	router.POST("/post-data", controller.PostData)
 
-	buf := strings.NewReader(`{"title": "mydata"}`)
+	buf := strings.NewReader(`{"name": "mydata", "stage": 1, "score": 100}`)
 	req, err := http.NewRequest("POST", "/post-data", buf)
 
 	if err != nil {
