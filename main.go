@@ -120,7 +120,7 @@ func main() {
 
 	authorized.POST("/data", dataController.PostData)
 	authorized.GET("/data", dataController.GetData)
-	authorized.GET("/data/:name", dataController.GetData)
+	authorized.GET("/data/:name", dataController.GetDataByName)
 
 	hostPort := fmt.Sprintf("%s:%s", httpHost, httpPort)
 	log.Println("Server starting at ", hostPort)

@@ -8,3 +8,9 @@ clean:
 
 test: build
 	go test ./...
+
+docker-up:
+	docker-compose up -d --build
+
+docker-down:
+	docker-compose down

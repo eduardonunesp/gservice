@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,16 +8,27 @@ import (
 	"github.com/eduardonunesp/gservice/services"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-type Data struct {
-	Name  string `form:"name" json:"name" xml:"name"  binding:"required"`
-	Stage int    `form:"stage" json:"stage" xml:"stage"  binding:"required"`
-	Score int    `form:"score" json:"score" xml:"score"  binding:"required"`
+type DataCreateRequest struct {
+	Name  string `form:"name" json:"name" xml:"name" binding:"required"`
+	Stage int    `form:"stage" json:"stage" xml:"stage" binding:"required"`
+	Score int    `form:"score" json:"score" xml:"score" binding:"required"`
+}
+
+type DataCreateResponse struct {
+	ID string `json:"id"`
+}
+
+type GetDataResponse struct {
+	ID    string `json:"id"`
+	Name  string `json:"name"`
+	Stage int    `json:"stage"`
+	Score int    `json:"score"`
 }
 
 type DataController interface {
+	GetDataByName(*gin.Context)
 	GetData(*gin.Context)
 	PostData(*gin.Context)
 }
@@ -32,56 +42,63 @@ func NewDataController(service services.DataService) DataController {
 }
 
 func (pdc dataController) GetData(c *gin.Context) {
-	name := c.Param("name")
+	results, err := pdc.Service.GetAll()
 
-	if len(name) == 0 {
-		results, err := pdc.Service.GetAll()
+	if err != nil {
+		log.Printf("Internal error %+v\n", err)
 
-		if err != nil {
-			log.Printf("Internal error %+v\n", err)
+		c.JSON(500, gin.H{
+			"error": "failed to get data",
+		})
 
-			c.JSON(500, gin.H{
-				"error": "failed to get data",
-			})
-
-			return
-		}
-
-		c.JSON(200, results)
 		return
 	}
+
+	resultsData := make([]GetDataResponse, len(results))
+	for i, result := range results {
+		resultsData[i] = GetDataResponse{
+			ID:    result.UUID4,
+			Name:  result.Name,
+			Stage: result.Stage,
+			Score: result.Score,
+		}
+	}
+
+	c.JSON(200, resultsData)
+}
+
+func (pdc dataController) GetDataByName(c *gin.Context) {
+	name := c.Param("name")
 
 	result, err := pdc.Service.GetByName(name)
 
 	if err != nil {
 		log.Printf("Internal error %+v\n", err)
 
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			c.JSON(404, gin.H{
-				"error": "name not found",
-			})
-
-			return
-		}
-
 		c.JSON(500, gin.H{
-			"error": "failed to get post data",
+			"error": "failed to get data",
 		})
 
 		return
 	}
 
-	c.JSON(200, result)
+	c.JSON(200, GetDataResponse{
+		ID:    result.UUID4,
+		Name:  result.Name,
+		Stage: result.Stage,
+		Score: result.Score,
+	})
 }
 
 func (pdc dataController) PostData(c *gin.Context) {
-	var json Data
+	var json DataCreateRequest
 	if err := c.ShouldBindJSON(&json); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if err := pdc.Service.Insert(json.Name, json.Stage, json.Score); err != nil {
+	result, err := pdc.Service.Insert(json.Name, json.Stage, json.Score)
+	if err != nil {
 		c.JSON(500, gin.H{
 			"error": "failed to insert post data",
 			"cause": fmt.Sprintf("Internal error %+v\n", err),
@@ -89,7 +106,7 @@ func (pdc dataController) PostData(c *gin.Context) {
 		return
 	}
 
-	c.JSON(201, gin.H{
-		"msg": "post inserted with success",
+	c.JSON(201, DataCreateResponse{
+		ID: result.UUID4,
 	})
 }
