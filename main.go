@@ -23,6 +23,8 @@ var (
 	postgresDB       string
 	postgresHost     string
 	postgresPort     string
+	authUser         string
+	authPass         string
 )
 
 // Testsss
@@ -71,6 +73,18 @@ func init() {
 	if !found {
 		log.Fatal("env var POSTGRES_DB not found")
 	}
+
+	authUser, found = os.LookupEnv("AUTH_USER")
+
+	if !found {
+		log.Fatal("env var AUTH_USER not found")
+	}
+
+	authPass, found = os.LookupEnv("AUTH_PASS")
+
+	if !found {
+		log.Fatal("env var AUTH_PASS not found")
+	}
 }
 
 func main() {
@@ -94,9 +108,19 @@ func main() {
 	dataController := controllers.NewDataController(service)
 
 	r := gin.Default()
-	r.POST("/post-data", dataController.PostData)
-	r.GET("/get-data", dataController.GetData)
-	r.GET("/get-data/:title", dataController.GetData)
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome to the API",
+		})
+	})
+
+	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
+		authUser: authPass,
+	}))
+
+	authorized.POST("/data", dataController.PostData)
+	authorized.GET("/data", dataController.GetData)
+	authorized.GET("/data/:name", dataController.GetData)
 
 	hostPort := fmt.Sprintf("%s:%s", httpHost, httpPort)
 	log.Println("Server starting at ", hostPort)
