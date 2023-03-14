@@ -36,7 +36,7 @@ func init() {
 		httpHost = "localhost"
 	}
 
-	httpPort, found = os.LookupEnv("HTTP_PORT")
+	httpPort, found = os.LookupEnv("PORT")
 
 	if !found {
 		httpPort = "3000"
