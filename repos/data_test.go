@@ -93,7 +93,7 @@ func TestInsert(t *testing.T) {
 	score := 100
 
 	// Testing insert
-	err := repo.Insert(name, stage, score)
+	_, err := repo.Insert(name, stage, score)
 
 	if err != nil {
 		t.Error(err)
@@ -114,7 +114,7 @@ func TestInsert(t *testing.T) {
 	}
 
 	// Testing unique register
-	err = repo.Insert(name, stage, score)
+	_, err = repo.Insert(name, stage, score)
 
 	if err == nil {
 		t.Error("Expecting error of unique")

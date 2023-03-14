@@ -12,7 +12,8 @@ import (
 type DataRepo interface {
 	Select() ([]models.Data, error)
 	SelectByName(name string) (models.Data, error)
-	Insert(name string, stage, score int) error
+	SelectById(id string) (models.Data, error)
+	Insert(name string, stage, score int) (models.Data, error)
 }
 
 type dataRepo struct {
@@ -35,7 +36,13 @@ func (m *dataRepo) SelectByName(name string) (models.Data, error) {
 	return result, err
 }
 
-func (m *dataRepo) Insert(name string, stage, score int) error {
+func (m *dataRepo) SelectById(name string) (models.Data, error) {
+	result := models.Data{}
+	err := m.DB.Where("uuid = ?", name).First(&result).Error
+	return result, err
+}
+
+func (m *dataRepo) Insert(name string, stage, score int) (models.Data, error) {
 	data := models.Data{
 		Name:          name,
 		Stage:         stage,
@@ -44,5 +51,9 @@ func (m *dataRepo) Insert(name string, stage, score int) error {
 		UnixTimestamp: time.Now().UTC().Unix(),
 	}
 
-	return m.DB.Create(&data).Error
+	if err := m.DB.Create(&data).Error; err != nil {
+		return data, err
+	}
+
+	return data, nil
 }

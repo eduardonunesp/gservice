@@ -17,10 +17,11 @@ make test
 
 ## E2E test
 
-### Adding new post data `POST /post-data`
+### Adding new post data `POST /data`
 
 ```bash
-curl -X POST --header "Content-Type: application/json" --data '{"name": "Test1", "stage": 1, "score": 100}' docker_host_address:3000/post-data
+# Passing basic auth on routes for data
+curl -X POST -u "admin:admin" --header "Content-Type: application/json" --data '{"name": "Test1", "stage": 1, "score": 100}' docker_host_address:3000/post-data
 ```
 
 ```json
@@ -29,10 +30,11 @@ curl -X POST --header "Content-Type: application/json" --data '{"name": "Test1",
 }
 ```
 
-### List all post data `GET /get-data`
+### List all post data `GET /data`
 
 ```bash
-curl -v http://docker_host_address:3000/get-data
+# Passing basic auth on routes for data
+curl -v http://docker_host_address:3000/data
 ```
 
 ```json
