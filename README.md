@@ -20,7 +20,7 @@ make test
 ### Adding new post data `POST /post-data`
 
 ```bash
-curl -X POST --header "Content-Type: application/json" --data '{"title": "Test1"}' docker_host_address:3000/post-data
+curl -X POST --header "Content-Type: application/json" --data '{"name": "Test1", "stage": 1, "score": 100}' docker_host_address:3000/post-data
 ```
 
 ```json
@@ -39,13 +39,15 @@ curl -v http://docker_host_address:3000/get-data
 [
   {
     "UUID4": "40ff6d6b-f55d-4203-aaa5-86fa9a36e393",
-    "Title": "test2",
+    "Name": "test2",
+    "Stage": 1,
+    "Score": 100,
     "Timestamp": "2020-09-06T15:46:35+00:00"
   }
 ]
 ```
 
-### Get post data by title `GET /get-data/{title}`
+### Get post data by name `GET /get-data/{name}`
 
 ```bash
 curl -v http://docker_host_address:3000/get-data/test2
@@ -54,7 +56,9 @@ curl -v http://docker_host_address:3000/get-data/test2
 ```json
 {
  "UUID4": "40ff6d6b-f55d-4203-aaa5-86fa9a36e393",
-  "Title": "test2",
+  "Name": "test2",
+  "Stage": 1,
+  "Score": 100,
   "Timestamp": "2020-09-06T15:46:35+00:00"
 }
 ```
